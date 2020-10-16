@@ -20,7 +20,7 @@ So far the plan looks like this:
   - TF-IDF
   - N-grams
   - Stemming
-- Word embeddings (word2vec)
+- Word embeddings
 - CNNs
 - Deep Learning (BERT)
 
@@ -84,4 +84,36 @@ or other things.
 Still, that was a valuable learning experience,
 mostly in that it taught me that writing all of the above by hand
 is a huge pain in the ass.
-I am now ready to move on to word2vec.
+I am now ready to move on to word embeddings.
+
+# Word embeddings
+
+More specifically, [wikipedia2vec](https://wikipedia2vec.github.io/wikipedia2vec/pretrained/).
+This is a collection of pre-trained vectors for words in a dozen languages,
+all trained using Wikipedia data.
+The vectors come in 100, 300, and 500 dimensions, with 300 being the most popular.
+This is a lot less than my 100K-dimensional vectors for naive bigrams.
+
+These vectors encode some semantic information about words,
+for instance the famous example `king - man + woman = queen`
+(first mentioned in [Mikolov et al 2013](https://www.aclweb.org/anthology/N13-1090/)).
+[NB: The closest vector will actually be `king`, but `queen` is number two.
+I'd say that's still quite impressive, especially when compared to techniques like TF-IDF.]
+
+The vector collection size is absolutely massive: around 10GB.
+This includes such things as plurals and other derived forms,
+so stemming is not necessary with this library.
+
+Of course, the difference from the previous method
+is that these vectors are for individual words.
+There are two ways I could calculate a vector for a document:
+
+1. Put all the word vectors from a single document (in my case, a review)
+   together in one big vector. Naturally this means that reviews with fewer
+   words will have shorter vectors. These have to be padded with zeros.
+2. Calculate the average of all word vectors in a single document
+   and have it be the value for that document.
+
+The latter is apparently used more often and still gives the best results
+while also being the quickest to execute.
+
