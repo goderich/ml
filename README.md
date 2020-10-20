@@ -117,3 +117,6 @@ There are two ways I could calculate a vector for a document:
 The latter is apparently used more often and still gives the best results
 while also being the quickest to execute.
 
+Using word embeddings with vector averages means I'm manipulating 300-dimensional vectors, a lot smaller than the many tens of thousands of dimensions I had in the naive implementation. This makes learning very quick: a linear kernel takes around 20 seconds on our server, and an rbf kernel around 30 seconds.
+
+The results are also a lot better: 73-75% correct. This drops with a C of 0.01 or lower due to underfitting.
