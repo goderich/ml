@@ -21,6 +21,8 @@ So far the plan looks like this:
   - N-grams
   - Stemming
 - Word embeddings
+  - wikipedia2vec
+  - gensim
 - CNNs
 - Deep Learning (BERT)
 
@@ -94,6 +96,8 @@ all trained using Wikipedia data.
 The vectors come in 100, 300, and 500 dimensions, with 300 being the most popular.
 This is a lot less than my 100K-dimensional vectors for naive bigrams.
 
+## Wikipedia2Vec
+
 These vectors encode some semantic information about words,
 for instance the famous example `king - man + woman = queen`
 (first mentioned in [Mikolov et al 2013](https://www.aclweb.org/anthology/N13-1090/)).
@@ -120,3 +124,20 @@ while also being the quickest to execute.
 Using word embeddings with vector averages means I'm manipulating 300-dimensional vectors, a lot smaller than the many tens of thousands of dimensions I had in the naive implementation. This makes learning very quick: a linear kernel takes around 20 seconds on our server, and an rbf kernel around 30 seconds.
 
 The results are also a lot better: 73-75% correct. This drops with a C of 0.01 or lower due to underfitting.
+
+## Training my models with Gensim
+
+I also trained my own models on the (unscored) data with the help of the training script in `w2v-train.py`. On bigger datasets, this can lead to further improvements of results. Evidently, my dataset was not big enough, because the results got a lot worse instead (hovering around 55%). Still, that was an experience in training my own embedding model, and I could come back and play around with it later.
+
+When training a model, there are many parameters to choose from. So far I stuck with the following:
+
+``` python
+model = word2vec.Word2Vec(sentences, size=300, min_count=1, sg=1, window=3)
+```
+
+The parameters are as follows:
+
+- `size` is obviously just the dimensions of the resulting vectors. I set it to 300 to mimic what wikipedia2vec was doing.
+- `min_count` is the smallest amount of times a word can occur in the dataset to be included in the model. My dataset is very small, so I want to include everything, even hapax legomena.
+- `sg` is the training algorithm. This can be either skip-gram (`sg=1`) or continuous bag-of-words (CBOW, `sg=0`).
+- `window` is how far behind and ahead the algorithm looks for context, in the number of words. The default is 5, but apparently 2 or 3 works best here. Indeed, with my data 3 gave the best results.
