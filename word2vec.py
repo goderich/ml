@@ -7,23 +7,20 @@ import time
 from datetime import timedelta
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-from wikipedia2vec import Wikipedia2Vec
-
+import gensim.models
 
 stopwords = stopwords.words('english')
-w2v = Wikipedia2Vec.load('w2v/enwiki_20180420_300d.pkl')
+w2v = gensim.models.Word2Vec.load('data/model')
 
 
 def safe_get_line_vector(wordlist):
     vectors = []
     for w in wordlist:
         try:
-            v = w2v.get_word_vector(w)
+            v = w2v.wv[w]
             vectors.append(v)
-        except KeyError:
+        except:
             pass
-    if vectors == []:
-        return np.zeros(300)
     return np.mean(vectors, axis=0)
 
 
