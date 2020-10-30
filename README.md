@@ -163,3 +163,37 @@ With both models, training stopped at around 110-120 epochs.
 
 Final accuracy was around 73-75%.
 Not great, but not bad either.
+
+## Deep Learning without pretrained embeddings
+
+The next step is using DL without pretrained embeddings.
+The difference between the two methods,
+as far as I understood after discussing it with Joli,
+is as follows.
+Pretrained embeddings are rigid;
+they are good for all-around purposes,
+but difficult to mold for specific tasks.
+Using pretrained embeddings limits
+the amount of training you can do on your data.
+On the other hand, without pretrained embeddings
+the model essentially learns new embeddings from scratch.
+This makes it highly specialized to the training data,
+which is both an upside and a downside.
+
+The results speak for themselves:
+I ran it a couple of times and got 79-81% accuracy.
+The accuracy spread is a bit wide,
+the randomness factor gives a margin of several percent.
+Training lasted for about 15-16 epochs
+(compare with pretrained embeddings).
+
+I am currently (Oct 30) using this code
+without understanding it completely.
+I know that it uses PyTorch, scikit-learn, and NumPy.
+Joli's pipeline includes a number of model classes
+that he defined for his own
+~~nefarious~~ purposes and experiments.
+My next task will be to understand that code,
+and ideally rewrite it from scratch
+(perhaps in a different language
+to force myself to understand it).
