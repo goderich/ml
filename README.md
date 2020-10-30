@@ -141,3 +141,25 @@ The parameters are as follows:
 - `min_count` is the smallest amount of times a word can occur in the dataset to be included in the model. My dataset is very small, so I want to include everything, even hapax legomena.
 - `sg` is the training algorithm. This can be either skip-gram (`sg=1`) or continuous bag-of-words (CBOW, `sg=0`).
 - `window` is how far behind and ahead the algorithm looks for context, in the number of words. The default is 5, but apparently 2 or 3 works best here. Indeed, with my data 3 gave the best results.
+
+# Deep Learning
+
+Finally it's time to do some proper deep learning. For this I am no longer writing my algorithms from scratch, but instead relying on Joli's code from the `classification_sample` directory (with some debugging of stale code).
+
+## Deep Learning with pretrained embeddings
+
+The first step was to use DL with pretrained word embeddings.
+For this I used two models:
+
+- A Google News vector model from Joli's repo,
+- and the Wikipedia2Vec model from before.
+
+With this method, learning is iterative
+and divided into epochs (capped at 300),
+with an early stop
+if the `val_loss` value does not shrink for 7 epochs.
+Training time is around 3 seconds per epoch on our server.
+With both models, training stopped at around 110-120 epochs.
+
+Final accuracy was around 73-75%.
+Not great, but not bad either.
